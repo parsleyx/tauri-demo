@@ -77,25 +77,25 @@ export const OrderPayPage = ({ }) => {
         }
     }, []);
     return <Page>
-        <div className="w-1/2 bg-white bg-opacity-70 p-3 rounded-md flex flex-col flex-1 mb-4">
+        <div className="w-4/7 bg-white bg-opacity-70 px-4 py-2 rounded-md flex flex-col flex-1 mt-4">
             <div className="flex justify-center">
-                <span className="text-lg font-bold">订单详情</span>
+                <span className="text-md font-bold">订单详情</span>
             </div>
             <div className="flex flex-col">
-                <span className="text-base">游戏版本：{order?.title}</span>
-                <span className="text-base">游戏说明：{order?.sub_title}</span>
-                <span className="text-base">订单号：{order?.no}</span>
+                <span className="text-sm">游戏版本：{order?.title}</span>
+                <span className="text-sm">游戏说明：{order?.sub_title}</span>
+                <span className="text-sm">订单号：{order?.no}</span>
                 <div>
-                    <span className="text-base">应付金额：<span className=" text-lg text-red-500 font-bold">¥ {((order?.amount ?? 0) / 100).toFixed(2)}</span></span>
+                    <span className="text-sm">应付金额：<span className="text-base text-red-500 font-bold">¥ {((order?.amount ?? 0) / 100).toFixed(2)}</span></span>
                     <span className="text-sm text-red-500">{order?.amount_desc}</span>
                 </div>
             </div>
-            <div className="flex w-full mt-4">
+            <div className="flex w-full mt-2">
                 <div className="w-1/2">
                     <div className="w-full h-full flex flex-row items-start">
 
-                        {payUrl ? <div className="w-[90%] bg-white border-8 border-blue-500 rounded-md flex flex-col items-center justify-center pt-8">
-                            <QRCode className="w-[120px] h-[120px] mb-4" value={payUrl} />
+                        {payUrl ? <div className="w-[90%] bg-white border-8 border-blue-500 rounded-md flex flex-col items-center justify-center pt-4">
+                            <QRCode className="w-[70px] h-[70px] mb-2" value={payUrl} />
                             <span className="text-xs text-gray-500 mb-2">请使用<span className="text-blue-500">{payConfig?.pay_list[payType].name}</span>扫码</span>
                         </div> : <></>}
                     </div>
@@ -106,21 +106,21 @@ export const OrderPayPage = ({ }) => {
                             payConfig?.pay_list.map((item, index) => {
                                 return <Button
                                     key={index}
-                                    size="lg"
+                                    size="sm"
                                     onClick={() => {
                                         setPayType(index)
                                         setPayUrl(item.url);
                                     }}
                                     color={payType === index ? "primary" : "default"}
-                                    className="w-full mt-2 bg-white justify-start"
+                                    className="w-full mt-1 bg-white justify-start"
                                     variant="bordered">
                                     <div className="w-full flex flex-row justify-between items-center">
                                         <div className="flex flex-row items-center">
-                                            <img className="h-6 mr-2" src={item.icon} alt={item.name} />
+                                            <img className="h-4 mr-2" src={item.icon} alt={item.name} />
                                             <span>{item.name}</span>
                                         </div>
                                         <div>
-                                            {index === payType ? <img src="/check.png" alt="" className="h-8" /> : <></>}
+                                            {index === payType ? <img src="/check.png" alt="" className="h-4" /> : <></>}
                                         </div>
                                     </div>
                                 </Button>
@@ -130,7 +130,7 @@ export const OrderPayPage = ({ }) => {
                     <div className="flex flex-1 flex-row items-end">
                         <Button onClick={() => {
                             navigate('/');
-                        }} size="lg" className="w-full mt-2 bg-red-500 text-white border-none" variant="bordered">
+                        }} size="sm" className="w-full mt-1 bg-red-500 text-white border-none" variant="bordered">
                             <span>返回重选</span>
                         </Button>
                     </div>
@@ -138,7 +138,7 @@ export const OrderPayPage = ({ }) => {
             </div>
             <div className="flex flex-1 flex-row items-end">
                 <Spinner size="sm" color="default" />
-                <span className="ml-2 text-sm text-gray-500">安装程序，将在付款后运行</span>
+                <span className="ml-2 text-xs text-gray-500">安装程序，将在付款后运行</span>
             </div>
         </div>
     </Page>

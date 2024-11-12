@@ -61,12 +61,12 @@ export const IndexPage = () => {
     }, []);
     return <Page>
         <div className="flex flex-col flex-1">
-            <div className="w-full flex flex-col justify-between h-full mb-22">
+            <div className="w-full flex flex-col justify-between h-full">
                 <div className="mt-4">
-                    <p className="text-5xl font-medium text-white">欢迎回来，指挥官，</p>
-                    <p className="text-5xl font-medium text-white">您的任务现在已开始。</p>
+                    <p className="text-3xl font-medium text-white">欢迎回来，指挥官，</p>
+                    <p className="text-3xl font-medium text-white">您的任务现在已开始。</p>
                 </div>
-                <div className="w-1/3 bg-white bg-opacity-60 p-3 rounded-md">
+                <div className="w-3/7 mt-4 bg-white bg-opacity-60 p-3 rounded-md">
                     <div>
                         <Select placeholder="请选择要安装的版本" value={id} onChange={(e) => {
                             setId(e.target.value);
