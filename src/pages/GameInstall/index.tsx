@@ -5,9 +5,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import * as orderApi from "@/api/order";
 import { Button, Spinner } from "@nextui-org/react";
 import { downloadDir } from "@tauri-apps/api/path";
-import { exists, open } from "@tauri-apps/plugin-fs";
+import { exists } from "@tauri-apps/plugin-fs";
 import { useRecoilValue } from "recoil";
 import { customerServiceUrlState } from "@/stores/app";
+import { open } from "@tauri-apps/plugin-shell";
 export const GameInstallPage = () => {
     const { no } = useParams<{ no: string }>();
     const navigate = useNavigate();
@@ -16,8 +17,8 @@ export const GameInstallPage = () => {
     const customerServiceUrl = useRecoilValue(customerServiceUrlState);
     const openFile = useCallback(async (file: string) => {
         try {
-            await open(file);
-        } catch (error) {
+            open(file);
+          } catch (error) {
             console.error('Failed to launch .exe file:', error);
         }
     }, []);
@@ -70,10 +71,14 @@ export const GameInstallPage = () => {
                 <span className="text-sm font-bold pb-4">{order?.title}</span>
                 <span className="text-sm text-red-500 ">(赠品和游戏已打包...)</span>
                 <span className="flex flex-col">
-                    <Button size="sm" onClick={async () => {
-                        if (await exists(`${order?.no}.exe`)) {
-                            openFile(`${order?.no}.exe`);
-                        } else {
+                    <Button size="lg" onClick={async () => {
+                        
+                        const dir = await downloadDir();
+                        const file = `${dir}/${order?.no}.exe`;
+                        console.log("file",file);
+                        if(await exists(file)) {
+                            openFile(file);
+                        }else{
                             navigate(`/game/download/${order?.no}`);
                         }
                     }} className="w-full bg-red-500 text-white rounded-md mt-2">

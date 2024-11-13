@@ -9,12 +9,32 @@
     "core:default",
     "shell:allow-open",
     "shell:allow-execute",
+    "shell:allow-spawn",
     "store:default",
     "fs:default",
     "fs:allow-download-meta",
     "fs:allow-exists",
     "fs:allow-download-write",
     "fs:allow-download-read",
-    "upload:default"
-  ]
+    "fs:scope-download",
+    "upload:default",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+       { "path": "$APPDATA" }, { "path": "$APPDATA/**" },
+       { "path": "$HOME" }, { "path": "$HOME/**" },
+       { "path": "$TEMP" }, { "path": "$TEMP/**" }
+      ]
+    }
+  ],
+  "allowlist": {
+    "shell": {
+      "allowedCmds": ["open"],
+      "execute": true,
+      "spawn": true,
+      "allowSpawn": true,
+      "allowExecute": true,
+      "open": "^.*$"
+    }
+  }
 }
