@@ -33,7 +33,8 @@
        { "path": "$HOME" }, { "path": "$HOME/**" },
        { "path": "$TEMP" }, { "path": "$TEMP/**" }
       ]
-    }
+    },
+    "core:window:allow-set-size"
   ],
   "allowlist": {
     "shell": {

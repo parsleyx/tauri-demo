@@ -961,6 +961,7 @@ dependencies = [
 name = "game-download"
 version = "0.1.0"
 dependencies = [
+ "encoding_rs",
  "serde",
  "serde_json",
  "tauri",

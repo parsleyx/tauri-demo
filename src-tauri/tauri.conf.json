@@ -12,9 +12,10 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "game-download",
-        "width": 640,
-        "height": 480,
+        "width": 0,
+        "height":0,
         "resizable": false
       }
     ],
