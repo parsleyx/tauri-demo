@@ -12,14 +12,18 @@ export const OrderPayPage = ({ }) => {
     const navigate = useNavigate();
     const [payConfig, setPayConfig] = useState<orderApi.PayConfig>();
     const [payType, setPayType] = useState<number>(0);
-    const [payUrl, setPayUrl] = useState<string>();
+    const [qrcodeData, setQrcodeData] = useState<string>();
     const [order, setOrder] = useState<orderApi.Order>();
     const loadingRef = useRef(false);
     const intervalRef = useRef<NodeJS.Timeout>();
     const loadPayConfig = useCallback(async (v: string) => {
         orderApi.payConfig(v).then((res) => {
             setPayConfig(res.pay_config);
-            setPayUrl(res.pay_config.pay_list[0].url);
+            if(res.pay_config.pay_list.length > 0){
+                orderApi.payData(v, res.pay_config.pay_list[0].type).then((res) => {
+                    setQrcodeData(res.qrcode_data);
+                });
+            }
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);
             }
@@ -93,9 +97,8 @@ export const OrderPayPage = ({ }) => {
             <div className="flex w-full mt-2">
                 <div className="w-1/2">
                     <div className="w-full h-full flex flex-row items-start">
-
-                        {payUrl ? <div className="w-[90%] bg-white border-8 border-blue-500 rounded-md flex flex-col items-center justify-center pt-4">
-                            <QRCode className="w-[70px] h-[70px] mb-2" value={payUrl} />
+                        {qrcodeData ? <div className="w-[90%] bg-white border-8 border-blue-500 rounded-md flex flex-col items-center justify-center pt-4">
+                            <QRCode className="w-[70px] h-[70px] mb-2" value={qrcodeData} />
                             <span className="text-xs text-gray-500 mb-2">请使用<span className="text-blue-500">{payConfig?.pay_list[payType].name}</span>扫码</span>
                         </div> : <></>}
                     </div>
@@ -109,7 +112,11 @@ export const OrderPayPage = ({ }) => {
                                     size="sm"
                                     onClick={() => {
                                         setPayType(index)
-                                        setPayUrl(item.url);
+                                        orderApi.payData(order?.no ?? '', item.type).then((res) => {
+                                            setQrcodeData(res.qrcode_data);
+                                        }).catch(() => {
+                                            alert("获取支付二维码失败");
+                                        });
                                     }}
                                     color={payType === index ? "primary" : "default"}
                                     className="w-full mt-1 bg-white justify-start"
