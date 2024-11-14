@@ -22,6 +22,7 @@ export const GameDownloadPage = () => {
     const [speed, setSpeed] = useState('');
     const [total, setTotal] = useState(0);
     const [progressText, setProgressText] = useState('0%');
+    const [progress, setProgress] = useState(0);
     const downloadFile = useCallback(async (url: string, fileName: string) => {
         if (downloadingRef.current) {
             return;
@@ -37,10 +38,11 @@ export const GameDownloadPage = () => {
         const tmpFileName = `${uuidv4()}.dl`;
         const tmpFile = `${dir}/${tmpFileName}`;
         download(url, tmpFile, (res) => {
+            console.log(res.progressTotal);
             setSpeed(filesize(res.transferSpeed));
             setTotal(res.total);
-            const progressText = (res.progress/res.total).toFixed(2) + '%';
-            console.log('下载中',progressText);
+            const progressText = (res.progressTotal/res.total*100).toFixed(2) + '%';
+            setProgress(res.progressTotal/res.total*100)
             setProgressText(progressText);
         }).then(() => {
             rename(tmpFile, `${dir}/${fileName}`);
@@ -126,7 +128,7 @@ export const GameDownloadPage = () => {
                         })}</span>
                     </div>
                     <div className="w-4/5 mt-2 flex flex-col items-center justify-center">
-                        <Progress className="w-full" value={16} />
+                        <Progress maxValue={100} className="w-full" value={progress} />
                     </div></> : null}
             </div>
         </div>

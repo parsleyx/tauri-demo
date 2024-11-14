@@ -98,11 +98,11 @@ export const OrderListPage = () => {
             <Spinner />
           </div>}>
           {orders.map(order => <TableRow key={order.no}>
-            <TableCell>{order.no}</TableCell>
-            <TableCell>{order.title}</TableCell>
-            <TableCell>{order.created_at}</TableCell>
-            <TableCell className="text-red-500">¥ {(order.amount / 100).toFixed(2)}</TableCell>
-            <TableCell className="text-red-400">{OrderStatus[order.status]}</TableCell>
+            <TableCell className="text-xs" width="10%">{order.no}</TableCell>
+            <TableCell className="text-xs" width="20%">{order.title}</TableCell>
+            <TableCell className="text-xs" width="20%">{order.created_at}</TableCell>
+            <TableCell className="text-red-500  text-xs" width="20%">¥ {(order.amount / 100).toFixed(2)}</TableCell>
+            <TableCell className="text-red-400 text-xs" width="20%">{OrderStatus[order.status]}</TableCell>
             <TableCell>
               <Button size="sm" color="primary" variant="ghost" onClick={() => {
                 if (order.status == 1 || order.status == 2) {

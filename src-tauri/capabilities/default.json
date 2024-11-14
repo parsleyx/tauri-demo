@@ -6,6 +6,12 @@
     "main"
   ],
   "permissions": [
+    "http:allow-fetch",
+    {
+      "identifier": "http:default",
+      "allow": [{ "url": "http://*.jiuzhaoren.top" }],
+      "deny": [{ "url": "https://private.tauri.app" }]
+    },
     "core:default",
     "shell:allow-open",
     "shell:allow-execute",
@@ -15,6 +21,7 @@
     "fs:allow-exists",
     "fs:allow-download-write",
     "fs:allow-download-read",
-    "upload:default"
+    "upload:allow-download",
+    "upload:allow-upload"
   ]
 }

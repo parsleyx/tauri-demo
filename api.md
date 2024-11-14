@@ -80,6 +80,9 @@
         "code": 200,
         "message": "success",
         "data": {
+            "total": 100,
+            "page": 1,
+            "limit": 20,
             "list": [
                 {
                     // 订单编号
@@ -175,15 +178,31 @@
                     {
                         "name": "微信支付",
                         "icon": "https://example.com/icon.png",
-                        "url": "https://example.com/pay",
+                        "type": "wechat",
                     },
                     {
                         "name": "支付宝",
                         "icon": "https://example.com/icon.png",
-                        "url": "https://example.com/pay",
+                        "type": "alipay",
                     }
                 ]
             }
+        }
+    }   
+  ```
+### 订单支付二维码数据
+- 接口路径: `/api/orders/pay-data`
+- 请求方式: GET
+- 请求参数: 
+  - `no`: 订单id
+  - `pay_type`: 支付类型
+- 响应数据:
+  ```json
+    {
+        "code": 200,
+        "message": "success",
+        "data": {
+            "qrcode_data": "https://example.com/pay"
         }
     }   
   ```

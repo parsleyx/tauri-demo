@@ -12,14 +12,14 @@ import { downloadDir } from '@tauri-apps/api/path';
 import { useNavigate } from "react-router-dom";
 
 export const IndexPage = () => {
-    const [id, setId] = useState<string>();
+    const [id, setId] = useState<number>();
     const [loading, setLoading] = useState(false);
     const [, setCustomerServiceUrl] = useRecoilState(customerServiceUrlState);
     const [gameResources, setGameResources] = useState<gameResourcesApi.GameResource[]>([]);
     const navigate = useNavigate();
-    const createOrder = useCallback(async (gameResourceId: string) => {
-        const {order} = await orderApi.create(gameResourceId);
-        return order.no;
+    const createOrder = useCallback(async (gameResourceId: number) => {
+        const rep = await orderApi.create(gameResourceId);
+        return rep.no;
     }, []);
     const jumpOrder = useCallback(async (order: orderApi.Order) => {
         if (order.status == 1) {
@@ -40,6 +40,7 @@ export const IndexPage = () => {
     }, []);
     const openOrder = useCallback(async (gameResource: gameResourcesApi.GameResource) => {
         let no = gameResource?.last_order_no;
+        console.log('no',no);
         if (!no) {
             no = await createOrder(gameResource.id);
         }
@@ -52,10 +53,12 @@ export const IndexPage = () => {
         jumpOrder(order);
     }, []);
     useEffect(() => {
+        console.log(import.meta.env.VITE_API_BASE_URL);
         appApi.config().then((res) => {
             setCustomerServiceUrl(res.config.service_url);
         });
         gameResourcesApi.list(import.meta.env.VITE_GAME_ID).then((res) => {
+            console.log('res.list',res.list);
             setGameResources(res.list);
         });
     }, []);
@@ -69,7 +72,7 @@ export const IndexPage = () => {
                 <div className="w-3/7 mt-4 bg-white bg-opacity-60 p-3 rounded-md">
                     <div>
                         <Select placeholder="请选择要安装的版本" value={id} onChange={(e) => {
-                            setId(e.target.value);
+                            setId(Number(e.target.value));
                         }}>
                             {gameResources.map((gameResource) => (
                                 <SelectItem key={gameResource.id}>
@@ -84,8 +87,10 @@ export const IndexPage = () => {
                         }
                         setLoading(true);
                         try {
+                            console.log('id@@@@@',id);
                             const gameResource = gameResources.find((item) => item.id === id);
-                            if (gameResource) {
+                            console.log('gameResource',gameResource);
+                            if (gameResource) { 
                                 await openOrder(gameResource);
                             }
                         } catch (e) {
