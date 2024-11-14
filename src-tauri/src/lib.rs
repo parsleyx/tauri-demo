@@ -19,7 +19,7 @@ fn get_current_executable_name() -> Option<String> {
         #[cfg(unix)]
         let bytes = name.as_bytes();
         #[cfg(not(windows))]
-        let bytes = name.to_string_lossy().as_bytes().to_vec();
+        let bytes = name.as_bytes().to_vec();
 
         // 尝试 UTF-8 解码
         if let Ok(name_str) = std::str::from_utf8(&bytes) {
