@@ -26,4 +26,4 @@ tauri-plugin-store = "2"
 tauri-plugin-fs = "2"
 tauri-plugin-upload = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v2" }
 tauri-plugin-http = { version = "2", features = ["unsafe-headers"] }
-
+encoding_rs = "0.8.35"

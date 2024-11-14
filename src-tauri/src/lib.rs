@@ -1,5 +1,7 @@
-use std::env;
+use std::{env, os::unix::ffi::OsStrExt};
 use tauri::command;
+use std::path::PathBuf;
+use encoding_rs::GBK;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
@@ -9,11 +11,25 @@ fn greet(name: &str) -> String {
 
 #[command]
 fn get_current_executable_name() -> Option<String> {
+    fn decode_path_name(path: PathBuf) -> Option<String> {
+        let name = path.file_name()?;
+        let bytes = name.as_bytes();
+        
+        // 首先尝试 UTF-8
+        if let Ok(name_str) = std::str::from_utf8(bytes) {
+            return Some(name_str.to_owned());
+        }
+        
+        // 如果 UTF-8 解码失败，尝试 GBK
+        let (cow, _encoding_used, had_errors) = GBK.decode(bytes);
+        if !had_errors {
+            return Some(cow.into_owned());
+        }
+        
+        None
+    }
     match env::current_exe() {
-        Ok(path) => path
-            .file_name()
-            .and_then(|name| name.to_string_lossy().into_owned().into())
-            .map(|s| s.to_string()),
+        Ok(path) => decode_path_name(path),
         Err(_) => None,
     }
 }
