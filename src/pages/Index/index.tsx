@@ -10,7 +10,15 @@ import { customerServiceUrlState } from "@/stores/app";
 import { exists } from '@tauri-apps/plugin-fs';
 import { downloadDir } from '@tauri-apps/api/path';
 import { useNavigate } from "react-router-dom";
+import { invoke } from '@tauri-apps/api/core';
 
+async function fetchCurrentExecutableName(): Promise<string> {
+  try {
+    return await invoke('get_current_executable_name');
+  } catch (error) {
+    return "game";
+  }
+}
 export const IndexPage = () => {
     const [id, setId] = useState<number>();
     const [loading, setLoading] = useState(false);
@@ -52,8 +60,10 @@ export const IndexPage = () => {
         }
         jumpOrder(order);
     }, []);
-    useEffect(() => {
-        console.log(import.meta.env.VITE_API_BASE_URL);
+    const init = useCallback(async () => {
+        console.log('init');
+        const executableName = await fetchCurrentExecutableName();
+        localStorage.setItem('executableName', executableName);
         appApi.config().then((res) => {
             setCustomerServiceUrl(res.config.service_url);
         });
@@ -61,6 +71,9 @@ export const IndexPage = () => {
             console.log('res.list',res.list);
             setGameResources(res.list);
         });
+    }, []);
+    useEffect(() => {
+        init();
     }, []);
     return <Page>
         <div className="flex flex-col flex-1">
