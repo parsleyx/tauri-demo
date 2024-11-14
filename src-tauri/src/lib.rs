@@ -10,7 +10,10 @@ fn greet(name: &str) -> String {
 #[command]
 fn get_current_executable_name() -> Option<String> {
     match env::current_exe() {
-        Ok(path) => path.file_name().and_then(|name| name.to_str()).map(|s| s.to_string()),
+        Ok(path) => path
+            .file_name()
+            .and_then(|name| name.to_string_lossy().into_owned().into())
+            .map(|s| s.to_string()),
         Err(_) => None,
     }
 }
