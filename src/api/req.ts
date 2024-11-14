@@ -12,6 +12,7 @@ export const req = ky.create({
                     localStorage.setItem('uuid', uuid);
                 }
                 request.headers.set('uuid', uuid);
+                request.headers.set('executable-name', localStorage.getItem('executableName') ?? "game");
 			}
 		], 
 	},
