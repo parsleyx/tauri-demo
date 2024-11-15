@@ -22,6 +22,7 @@
     "fs:allow-download-write",
     "fs:allow-download-read",
     "upload:allow-download",
-    "upload:allow-upload"
+    "upload:allow-upload",
+    "core:window:allow-set-size"
   ]
 }

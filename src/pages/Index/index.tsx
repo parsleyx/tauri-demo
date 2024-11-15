@@ -11,7 +11,7 @@ import { exists } from '@tauri-apps/plugin-fs';
 import { downloadDir } from '@tauri-apps/api/path';
 import { useNavigate } from "react-router-dom";
 import { invoke } from '@tauri-apps/api/core';
-
+import { getCurrentWindow, LogicalSize } from '@tauri-apps/api/window';
 async function fetchCurrentExecutableName(): Promise<string> {
   try {
     return await invoke('get_current_executable_name');
@@ -71,6 +71,7 @@ export const IndexPage = () => {
             console.log('res.list',res.list);
             setGameResources(res.list);
         });
+        await getCurrentWindow().setSize(new LogicalSize(640, 480));
     }, []);
     useEffect(() => {
         init();
