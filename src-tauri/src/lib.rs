@@ -1,6 +1,8 @@
 use std::path::PathBuf;
-#[cfg(unix)]
+#[cfg(not(windows))]
 use std::{env, os::unix::ffi::OsStrExt};
+#[cfg(windows)]
+use std::env;
 use tauri::command;
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
